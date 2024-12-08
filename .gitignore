@@ -1,0 +1,50 @@
+# Ignore all files in .idea/
+.idea/
+
+# But include shared settings for the team
+!.idea/modules.xml
+!.idea/vcs.xml
+
+# Optionally include workspace for shared run/debug configurations
+!.idea/workspace.xml
+
+# Ignore user-specific or unnecessary files
+.idea/tasks.xml
+.idea/uiDesigner.xml
+.idea/usage.statistics.xml
+.idea/analytics.xml
+.idea/dataSources/
+
+# Composer dependencies
+/vendor/
+
+# Symfony cache and logs
+/var/cache/
+/var/log/
+
+# Symfony built assets and static files
+/public/bundles/
+/public/build/
+/public/uploads/
+
+# IDE/editor config files (e.g., PhpStorm, VS Code)
+.idea/gi
+.vscode/
+*.iml
+
+# Node.js dependencies (if using Webpack Encore or similar)
+/node_modules/
+
+# PHPUnit result caches
+.phpunit.result.cache
+
+# Coverage reports
+/coverage/
+
+# Doctrine file-based metadata and cache
+/var/doctrine/
+
+# Miscellaneous system files
+*.DS_Store
+*.swp
+Thumbs.db

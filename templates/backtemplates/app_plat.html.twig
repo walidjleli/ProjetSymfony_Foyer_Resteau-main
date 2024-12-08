@@ -1,0 +1,94 @@
+{% extends 'backtemplates/baseback2.html.twig' %}
+
+{% block title %}Gestion des plats{% endblock %}
+
+{% block body %}
+<div class="container mt-4" style="margin-left: 20%; margin-top: 80px; padding-top: 80px;">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" id="flashMessage">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <button id="showFormButtonPlat" class="btn btn-primary mb-3">
+        Ajouter un plat
+        <span class="btn-icon-right"><i class="fa fa-plus"></i></span>
+    </button>
+
+    <div id="addFormPlat" style="display: none;">
+        <h2>Ajouter un nouveau plat</h2>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">
+                Ajouter <span class="btn-icon-right"><i class="fa fa-check"></i></span>
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+    <h2>Plats existants</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom du plat</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Catégorie</th>
+                <th>Disponibilité</th>
+                <th>Type de cuisine</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plat in plats %}
+                <tr>
+                    <td>{{ plat.id }}</td>
+                    <td>
+                        <div class="badge-circle">
+                            <a href="javascript:void()" class="badge badge-outline-primary">{{ plat.nomPlat }}</a>
+                        </div>
+                    </td>
+                    <td>{{ plat.descPlat }}</td>
+                    <td>{{ plat.prixPlat }} TND</td>
+                    <td>{{ plat.categoriePlat.nomCategorie }}</td>
+                    <td>{{ plat.dispoPlat ? 'Disponible' : 'Indisponible' }}</td>
+                    <td>{{ plat.typeCuisine }}</td>
+                    <td>
+                        {% if plat.image %}
+                            <img src="{{ asset('uploads/images/' ~ plat.image) }}" alt="Image de {{ plat.nomPlat }}" style="width: 80px; height: auto;">
+                        {% else %}
+                            <span class="text-muted">Pas d'image</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_plat_edit', {'id': plat.id}) }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-edit"></i> Modifier
+                        </a>
+                        <a href="{{ path('app_plat_delete', {'id': plat.id}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce plat ?');">
+                            <i class="fa fa-trash"></i> Supprimer
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    const showFormButtonPlat = document.getElementById('showFormButtonPlat');
+    const addFormPlat = document.getElementById('addFormPlat');
+    showFormButtonPlat.addEventListener('click', function () {
+        addFormPlat.style.display = (addFormPlat.style.display === 'none') ? 'block' : 'none';
+    });
+
+    setTimeout(function() {
+        const flashMessage = document.getElementById('flashMessage');
+        if (flashMessage) {
+            flashMessage.style.display = 'none';
+        }
+    }, 2000);
+</script>
+{% endblock %}

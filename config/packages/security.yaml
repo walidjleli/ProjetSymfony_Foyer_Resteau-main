@@ -1,0 +1,45 @@
+security:
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    password_hashers:
+        App\Entity\User:
+            algorithm: auto
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+
+            form_login:
+                login_path: app_login
+                check_path: app_login_check
+                default_target_path: app_home
+
+            lazy: true
+            provider: app_user_provider
+            custom_authenticator: App\Security\UserAuthenticator
+            logout:
+                path: app_logout
+                target: app_login
+    access_control:
+        # Permettre l'accès sans authentification à certaines routes publiques
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # Permettre l'accès uniquement aux utilisateurs ayant le rôle ADMIN aux routes du back-office
+        - { path: ^/back, roles: ROLE_ADMIN }
+        - { path: ^/back2, roles: ROLE_ADMIN }
+
+        # Permettre l'accès aux utilisateurs authentifiés pour les pages frontales
+        - { path: ^/, roles: ROLE_USER }
+
+        # Interdire l'accès à toute autre route (optionnel, si vous voulez un contrôle strict)
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
